@@ -1,0 +1,41 @@
+.page {
+  background-color: $primary;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacer;
+}
+
+.loginCard {
+  height: min-content;
+  width: 100%;
+  max-width: 350px;
+  z-index: 1;
+
+  .title {
+    text-align: center;
+    margin-bottom: 0;
+
+    hr {
+      margin: $spacer-large 0;
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-right: 8px;
+    }
+  }
+}

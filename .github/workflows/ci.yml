@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        # try to restore
+      - name: cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: install
+        run: yarn install --frozen-lockfile --check-files
+        # cache the working directory so we can use it in other jobs without having to checkout and install
+      - uses: actions/cache@v2
+        with:
+          path: ./**
+          key: ${{ github.sha }}
+  lint:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      # restore working directory from cache
+      - uses: actions/cache@v2
+        with:
+          path: ./**
+          key: ${{ github.sha }}
+      - run: yarn lint
+  test:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      # restore working directory from cache
+      - uses: actions/cache@v2
+        with:
+          path: ./**
+          key: ${{ github.sha }}
+      - run: yarn test
+  type_check:
+    name: type check
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      # restore working directory from cache
+      - uses: actions/cache@v2
+        with:
+          path: ./**
+          key: ${{ github.sha }}
+      - run: yarn type-check

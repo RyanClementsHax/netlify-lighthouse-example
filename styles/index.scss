@@ -1,0 +1,5 @@
+@import 'bootstrap';
+
+.btn-github {
+  @include button-variant($github-primary, $github-primary);
+}
